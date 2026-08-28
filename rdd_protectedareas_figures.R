@@ -435,7 +435,8 @@ ggsave(file.path(dir_fig_si, "6_SP_IL_comparison_full.jpg"),
 # 3. Figure S4: Donut range estimation plot
 # ---------------------------------------------------------------------------
 donuts_m <- seq(0, 1800, by = 120)      # in meters
-
+# in order to get estimates for each donut seq it is necessary not to include the
+# shift (dist_adj) to the  dataset (otherwise NA ).
 run_donut <- function(gap_m, dat, yvar, xkm = "signed_distance_external_border_km",
                       one_sided_negative = FALSE) {
   to_km <- function(m) m / 1000

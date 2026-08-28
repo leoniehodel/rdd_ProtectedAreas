@@ -21,7 +21,9 @@ library(readr)      # write_csv
 library(rdrobust)   # rdrobust
 library(gt)
 library(arrow)
+library(MatchIt)
 source('rdd_helpers.R')
+mem.maxVSize(50000)
 # ---------------------------------------------------------------------------
 # 1. SETUP
 # ---------------------------------------------------------------------------
@@ -400,8 +402,16 @@ s8
 excl <- c(`Excl. <1000 m of settlement` = 1000,
           `Excl. <2000 m of settlement` = 2000)
 
+# exclude the datapoints outside of the PA for this
 il_excl <- map(excl, function(thr) {
-  filter(il, is.na(dist_to_next_aldeia) | dist_to_next_aldeia > thr | within_pa == 1)
+  keep <- il$within_pa == 0 |
+    is.na(il$dist_to_next_aldeia) |
+    il$dist_to_next_aldeia > thr
+  message(sprintf("thr = %s m: dropped %d of %d inside cells (%.1f%%)",
+                  thr,
+                  sum(!keep), sum(il$within_pa == 1),
+                  100 * sum(!keep) / sum(il$within_pa == 1)))
+  il[keep, ]
 })
 
 s9_tab <- rdd_grid(il_excl, vars_cattle, donut_range_km,
