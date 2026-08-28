@@ -33,7 +33,7 @@ install.packages(c("dplyr", "tidyr", "purrr", "tibble", "readr", "ggplot2",
 
 ## Reproducing the results
 
-Download the data from Zenodo [link will be added soon] and place into the data/ folder.
+Download the data from Zenodo [https://zenodo.org/records/21983167] and place into the data/ folder.
 Then, run the R scripts from the repository root:
 
 ```r
